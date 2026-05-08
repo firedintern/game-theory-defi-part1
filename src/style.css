@@ -169,6 +169,214 @@ body {
   font-family: 'SF Mono', 'Fira Code', monospace;
 }
 
+/* ── POOL SEARCH ── */
+.pool-search {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.pool-search-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.pool-search-input-wrap {
+  position: relative;
+  flex: 1;
+}
+.pool-search-input {
+  width: 100%;
+  background: #020617;
+  border: 1px solid rgba(55, 65, 81, 0.9);
+  border-radius: 9px;
+  padding: 9px 36px 9px 12px;
+  color: #e5e7eb;
+  font-size: 0.85rem;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+.pool-search-input:focus {
+  outline: none;
+  border-color: rgba(56, 189, 248, 0.65);
+  box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.2);
+}
+.pool-search-input::placeholder { color: #374151; }
+.pool-search-input:disabled { opacity: 0.5; }
+.pool-search-clear {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #4b5563;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+}
+.pool-search-clear:hover { color: #e5e7eb; }
+.pool-search-error-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #f87171;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+.pool-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 200;
+  background: #0c1628;
+  border: 1px solid rgba(55, 65, 81, 0.9);
+  border-radius: 10px;
+  overflow: hidden;
+  max-height: 280px;
+  overflow-y: auto;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.7);
+}
+.pool-dropdown-empty {
+  padding: 14px 16px;
+  font-size: 0.8rem;
+  color: #4b5563;
+  text-align: center;
+}
+.pool-dropdown-item {
+  width: 100%;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(31, 41, 55, 0.5);
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  transition: background 0.1s;
+}
+.pool-dropdown-item:last-child { border-bottom: none; }
+.pool-dropdown-item:hover { background: rgba(56, 189, 248, 0.06); }
+.pool-item-symbol {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #e5e7eb;
+  min-width: 90px;
+}
+.pool-item-meta {
+  font-size: 0.75rem;
+  color: #4b5563;
+  flex: 1;
+}
+.pool-item-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+}
+.pool-item-apr {
+  font-size: 0.75rem;
+  color: #34d399;
+  font-weight: 600;
+}
+.pool-item-tvl {
+  font-size: 0.68rem;
+  color: #374151;
+}
+
+.pool-config {
+  margin-top: 12px;
+  background: rgba(2, 6, 23, 0.6);
+  border: 1px solid rgba(56, 189, 248, 0.15);
+  border-radius: 10px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.pool-config-fetched {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.pool-config-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.pool-stat-label {
+  font-size: 0.65rem;
+  color: #4b5563;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.pool-stat-value {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+.pool-fetching {
+  font-size: 0.75rem;
+  color: #4b5563;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.pool-sliders {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.pool-slider-row {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.pool-slider-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.78rem;
+  color: #9ca3af;
+}
+.pool-slider-value {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #e5e7eb;
+}
+.pool-slider-row input[type='range'] {
+  width: 100%;
+  accent-color: #38bdf8;
+  cursor: pointer;
+}
+.pool-slider-hint {
+  font-size: 0.68rem;
+  color: #374151;
+  line-height: 1.4;
+}
+
+.pool-apply-btn {
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.45);
+  color: #38bdf8;
+  border-radius: 8px;
+  padding: 9px 18px;
+  font-size: 0.83rem;
+  font-family: inherit;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.15s;
+  align-self: flex-start;
+}
+.pool-apply-btn:hover:not(:disabled) { background: rgba(56, 189, 248, 0.22); }
+.pool-apply-btn:disabled { opacity: 0.45; cursor: default; }
+
 /* ── WORKSPACE ── */
 .workspace {
   display: grid;

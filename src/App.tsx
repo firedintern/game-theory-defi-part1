@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from 'react'
 import { analyzePD, PDAnalysis } from './game/pd'
 import { simulate, StrategyName, STRATEGY_LABELS, SimulationResult } from './game/strategies'
-import { POOL_PRESETS, poolToPD, PoolPreset } from './game/defi'
 import { GAME_TYPES, GameTypeName, analyzeGame, GameAnalysis } from './game/games'
+import PoolSearch from './components/PoolSearch'
 
 const DEFAULT_PAYOFFS = { T: 5, R: 3, P: 1, S: 0 }
 const STRATEGIES: StrategyName[] = ['always-cooperate', 'always-defect', 'tit-for-tat', 'grim-trigger', 'random']
@@ -89,13 +89,20 @@ const App: React.FC = () => {
   const [pgDC, setPgDC] = useState('5')
   const [pgDD, setPgDD] = useState('1')
 
-  function applyPool(preset: PoolPreset) {
-    const p = poolToPD(preset.stats)
-    setT(p.T.toString())
-    setR(p.R.toString())
-    setP(p.P.toString())
-    setS(p.S.toString())
-    setSelectedPool(preset.id)
+  function applyLivePool(
+    payoffs: { T: number; R: number; P: number; S: number },
+    _label: string,
+    _stats: { apr: number; volatility: number; whaleShare: number; horizon: number }
+  ) {
+    setT(payoffs.T.toString())
+    setR(payoffs.R.toString())
+    setP(payoffs.P.toString())
+    setS(payoffs.S.toString())
+    setSelectedPool('live')
+  }
+
+  function clearLivePool() {
+    setSelectedPool('manual')
   }
 
   function applyGameType(id: GameTypeName) {
@@ -171,8 +178,6 @@ const App: React.FC = () => {
     return 'Try the Strategy Simulation tab to see how repeated play and memory change the outcome.'
   })()
 
-  const activePoolPreset = POOL_PRESETS.find((p) => p.id === selectedPool)
-
   return (
     <div className="app-root">
 
@@ -228,34 +233,10 @@ const App: React.FC = () => {
       {/* ── SCENARIO SELECTOR ── */}
       <section className="scenario-section">
         <div className="scenario-header">
-          <span className="scenario-label">Start from a real pool scenario</span>
-          <span className="scenario-sub">or leave on Custom and set payoffs manually below</span>
+          <span className="scenario-label">Start from a real pool</span>
+          <span className="scenario-sub">Live data from DeFiLlama. Pools above $1M TVL only.</span>
         </div>
-        <div className="scenario-pills">
-          {POOL_PRESETS.map((preset) => (
-            <button
-              key={preset.id}
-              className={selectedPool === preset.id ? 'scenario-pill active' : 'scenario-pill'}
-              onClick={() => applyPool(preset)}
-            >
-              {preset.name}
-            </button>
-          ))}
-          <button
-            className={selectedPool === 'manual' ? 'scenario-pill active' : 'scenario-pill'}
-            onClick={() => setSelectedPool('manual')}
-          >
-            Custom
-          </button>
-        </div>
-        {activePoolPreset && (
-          <div className="scenario-detail">
-            <span className="scenario-desc">{activePoolPreset.description}</span>
-            <span className="scenario-stats">
-              APR {activePoolPreset.stats.apr}% · Volatility {Math.round(activePoolPreset.stats.volatility * 100)}% · Whale share {Math.round(activePoolPreset.stats.whaleShare * 100)}% · Horizon {activePoolPreset.stats.horizon}d
-            </span>
-          </div>
-        )}
+        <PoolSearch onApply={applyLivePool} onClear={clearLivePool} />
       </section>
 
       {/* ── MAIN WORKSPACE ── */}
@@ -266,7 +247,7 @@ const App: React.FC = () => {
           <div className="sidebar-block">
             <div className="sidebar-block-title">Payoffs</div>
             <div className="sidebar-hint">
-              {selectedPool === 'manual' ? 'Adjust to reshape the game.' : 'Auto-filled from the scenario above.'}
+              {selectedPool === 'live' ? 'Auto-filled from live pool data.' : 'Adjust to reshape the game.'}
             </div>
             <div className="payoff-grid">
               {(['T', 'R', 'P', 'S'] as const).map((key) => {
