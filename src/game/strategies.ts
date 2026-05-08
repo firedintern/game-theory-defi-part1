@@ -62,6 +62,8 @@ export interface PDPayoffsForSim {
   S: number
 }
 
+const r2 = (n: number) => Math.round(n * 100) / 100
+
 function resolvePayoffs(
   moveA: Strategy,
   moveB: Strategy,
@@ -88,9 +90,11 @@ export function simulate(
   for (let i = 0; i < numRounds; i++) {
     const moveA = fnA(rounds, 'A')
     const moveB = fnB(rounds, 'B')
-    const { payoffA, payoffB } = resolvePayoffs(moveA, moveB, payoffs)
-    cumulativeA += payoffA
-    cumulativeB += payoffB
+    const raw = resolvePayoffs(moveA, moveB, payoffs)
+    const payoffA = r2(raw.payoffA)
+    const payoffB = r2(raw.payoffB)
+    cumulativeA = r2(cumulativeA + payoffA)
+    cumulativeB = r2(cumulativeB + payoffB)
     rounds.push({
       round: i + 1,
       moveA,

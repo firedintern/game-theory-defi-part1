@@ -4,6 +4,8 @@ import { simulate, StrategyName, STRATEGY_LABELS, SimulationResult } from './gam
 import { GAME_TYPES, GameTypeName, analyzeGame, GameAnalysis } from './game/games'
 import PoolSearch from './components/PoolSearch'
 
+const r2 = (n: number) => Math.round(n * 100) / 100
+
 const DEFAULT_PAYOFFS = { T: 5, R: 3, P: 1, S: 0 }
 const STRATEGIES: StrategyName[] = ['always-cooperate', 'always-defect', 'tit-for-tat', 'grim-trigger', 'random']
 
@@ -272,7 +274,7 @@ const App: React.FC = () => {
                 { ok: conditionsMet.TgtR, text: `T > R  (${numeric.T} > ${numeric.R})` },
                 { ok: conditionsMet.RgtP, text: `R > P  (${numeric.R} > ${numeric.P})` },
                 { ok: conditionsMet.PgtS, text: `P > S  (${numeric.P} > ${numeric.S})` },
-                { ok: conditionsMet.midpoint, text: `2R > T+S  (${2 * numeric.R} > ${numeric.T + numeric.S})` },
+                { ok: conditionsMet.midpoint, text: `2R > T+S  (${r2(2 * numeric.R)} > ${r2(numeric.T + numeric.S)})` },
               ].map(({ ok, text }) => (
                 <div key={text} className={ok ? 'condition ok' : 'condition fail'}>
                   <span className="condition-dot">{ok ? '✓' : '✗'}</span>
