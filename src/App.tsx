@@ -3,6 +3,7 @@ import { analyzePD, PDAnalysis } from './game/pd'
 import { simulate, StrategyName, STRATEGY_LABELS, SimulationResult } from './game/strategies'
 import { GAME_TYPES, GameTypeName, analyzeGame, GameAnalysis } from './game/games'
 import PoolSearch from './components/PoolSearch'
+import MechanismTab from './components/MechanismTab'
 
 const r2 = (n: number) => Math.round(n * 100) / 100
 
@@ -50,7 +51,7 @@ function parseNumber(value: string, fallback: number): number {
   return Number.isFinite(n) ? n : fallback
 }
 
-type Tab = 'matrix' | 'simulation' | 'playground'
+type Tab = 'matrix' | 'simulation' | 'playground' | 'mechanisms'
 
 const PAYOFF_HINTS: Record<string, string> = {
   T: 'Exit while others stay. Dodge future risk, keep past gains.',
@@ -299,6 +300,9 @@ const App: React.FC = () => {
             </button>
             <button className={tab === 'playground' ? 'tab active' : 'tab'} onClick={() => setTab('playground')}>
               Game Playground
+            </button>
+            <button className={tab === 'mechanisms' ? 'tab active' : 'tab'} onClick={() => setTab('mechanisms')}>
+              Mechanism Design
             </button>
           </div>
 
@@ -599,6 +603,11 @@ const App: React.FC = () => {
               </div>
             )
           })()}
+
+          {/* ── TAB: MECHANISMS ── */}
+          {tab === 'mechanisms' && (
+            <MechanismTab basePayoffs={numeric} />
+          )}
 
           {/* ── VERDICT BAR ── */}
           <div className="verdict-bar">
