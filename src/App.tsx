@@ -187,7 +187,7 @@ const App: React.FC = () => {
       {/* ── HERO ── */}
       <header className="hero">
         <div className="hero-text">
-          <h1 className="hero-title">DeFi Prisoner's Dilemma</h1>
+          <h1 className="hero-title">DeFi Prisoner's Dilemma ⛓️‍💥</h1>
           <p className="hero-subtitle">
             What happens when individual self-interest works against collective outcomes —
             and how does that play out in DeFi liquidity pools?
